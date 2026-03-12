@@ -249,11 +249,49 @@ INSERT INTO 테이블 [{열1,열2,...}] VALUES (값1, 값2, ...)
       ALTER TABLE TABLE_A AUTO=100; -> 시작값은 1000으로 지정
       SET @@AUTO_INCREMENT_INCREMENT=3; -> 증가값은 3으로 지정
       ```
-      
-    
-      
 
-<!-- INSERT문, UPDATE문, DELETE문에 관해 배우게 된 점을 적어주세요. -->
+
+- DESC TABLE: 테이블의 구조를 출력
+
+- ```
+  INSERT INTO city_pop
+      SELECT name, population FROM world.city;
+  ```
+  -> world.city에 있던 name과 population 열을 city_pop에 입력하는 쿼리
+  
+### UPDATE
+- 데이터 수정
+```
+UPDATE TABLE
+SET 열1=값1, 열2=값2,...
+WHERE 조건;
+```
+
+EX) 전체 인구 데이터를 10,000명 단위로 바꾸기
+```
+UPDATE CITY_POP
+    SET population = population / 10000;
+SELECT * FROM CITY_POP LIMIT 5;
+```
+
+
+### DELETE
+- 행 데이터를 삭제
+```
+DELETE FROM TABLE WHERE 조건;
+```
+
+
+### 대용량 테이블의 삭제
+
+- DELETE: 오래 걸림, 빈 테이블을 남김 
+- DROP: 테이블 자체를 삭제
+- TRUNCATE: DELETE와 동일한 효과, 속도 매우 빠름 , 빈테이블이 남음 
+
+
+
+
+
 
 > **확인문제: 다음이 설명하는 SQL이 무엇인지 쓰세요.**
 
@@ -264,7 +302,7 @@ INSERT INTO 테이블 [{열1,열2,...}] VALUES (값1, 값2, ...)
 ```
 
 ```
-여기에 답을 적어주세요!
+TRUNCATE
 ```
 
 
@@ -315,7 +353,22 @@ INSERT INTO students VALUES
 4. 나이가 20 이상이고 GPA가 3.5 이상인 학생을 조회하시오.
 5. students 테이블에 본인의 정보를 직접 INSERT 하시오. (INSERT 실행 후, 데이터가 정상적으로 추가되었는지 확인할 수 있도록 조회 결과까지 포함하여 캡처하시오.)
 
-<!-- 이 부분을 지우고 인증사진을 제출해주세요.-->
+
+
+# 1. 
+<img width="1045" height="760" alt="image" src="https://github.com/user-attachments/assets/af79c716-9b21-4f94-b767-87b5e44c6cdf" />
+
+# 2.
+<img width="1015" height="693" alt="image" src="https://github.com/user-attachments/assets/725e1c98-368f-40d5-a2eb-ab168673885b" />
+
+# 3. 
+<img width="1020" height="680" alt="image" src="https://github.com/user-attachments/assets/449c7e75-6f4b-4ba1-8bfc-17edf5ef9700" />
+
+# 4.
+<img width="953" height="626" alt="image" src="https://github.com/user-attachments/assets/57d242bb-abc1-428c-a859-73ba2b913bc9" />
+
+# 5. 
+<img width="1095" height="775" alt="image" src="https://github.com/user-attachments/assets/c371ef38-478f-42c1-8aa6-4cfc094594d5" />
 
 ### 🎉 수고하셨습니다.
 
