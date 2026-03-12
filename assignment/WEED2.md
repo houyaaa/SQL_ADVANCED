@@ -45,11 +45,82 @@ https://www.youtube.com/watch?v=WWAFAm9op2U&list=PLVsNizTWUw7GCfy5RH27cQL5MeKYnl
 
 ## 1. 기본 중에 기본 SELECT ~ FROM ~ WHERE
 
-<!-- 기본적인 SQL 문법에 관해 배우게 된 점을 적어주세요. -->
+## 데이터베이스 만들기
+```sql
+DROP DATABASE IF EXISTS market_db;
+CREATE DATABASE market_db;
+```
+1. **`DROP DATABASE`**: 데이터베이스를 삭제하는 문장
+2. **`CREATE DATABASE`**: 데이터베이스를 새로 생성하는 문장
+
+---
+
+## 테이블 만들기
+1. **`USE`**: 데이터 베이스를 선택하는 문장. `[SCHEMAS]` 패널에서 데이터베이스를 더블클릭하는 것과 동일한 효과
+2. **`VARCHAR`**: `CHAR`와 동일하게 문자를 입력하는 것 (가변 길이)
+3. **`AUTO_INCREMENT`**: 자동으로 숫자를 1씩 증가시켜 입력
+4. **`FK` (FOREIGN KEY)**: 외래 키. 테이블 간의 관계를 연결
+
+---
+
+## 데이터 입력하기
+1. **`INSERT`**: 테이블에 데이터를 삽입하는 문장
+2. **입력 규칙**: `CHAR`, `VARCHAR`, `DATE`형 -> 양옆에 작은따옴표(`' '`) 사용 / `INT`형 -> 작은따옴표 생략
+3. **`AUTO_INCREMENT`**: 자동입력이므로 해당 자리에는 `NULL` 입력
+
+---
+
+## 데이터 조회하기
+- **`SELECT`**
+
+### 1. USE
+```sql
+USE 데이터베이스_이름;
+```
+다른 DB를 사용하겠다고 명시하지 않으면 계속 해당 데이터베이스에서 쿼리 수행
+
+### 2. SELECT 문의 기본 형식
+```sql
+SELECT 열_이름
+    FROM 테이블_이름
+    WHERE 조건식
+    GROUP BY 열_이름
+    HAVING 조건식
+    ORDER BY 열_이름
+    LIMIT 숫자;
+```
+
+### 3. SELECT / FROM
+```sql
+USE market_db;
+SELECT * FROM market_db.member;
+```
+- 데이터베이스 이름 생략 -> `USE`문으로 지정해 놓은 DB 자동 선택
+- 원칙적으로 `데이터베이스_이름.테이블_이름` 형식을 사용
+
+### 4. 별칭 (ALIAS)
+조회되는 열 이름에 별칭 지정을 해줄 수 있음 (예: `AS 별칭`)
+
+### 5. 서브쿼리 (Subquery)
+`SELECT` 안에 또 다른 `SELECT`가 들어가는 형태
+```sql
+SELECT mem_name, height FROM member
+    WHERE height > (SELECT height FROM member WHERE mem_name = '에이핑크');
+```
+- 주로 `WHERE` 절 안에 서브쿼리가 들어가 조건의 기준으로 사용됨
+- 🚨 **(중요) `GROUP BY` 절에는 서브쿼리가 들어갈 수 없음**
+
+
+  
 
 <!-- 이번 챕터에서 제시된 실습을 흐름에 맞게 진행한 후, 실습 과정이 보일 수 있도록 인증 사진을 3~4장 제출해 주세요. -->
 
-<!-- 이 부분을 지우고 인증사진을 제출해주세요.-->
+<img width="1833" height="927" alt="image" src="https://github.com/user-attachments/assets/9b92a248-4d07-4211-9ef6-b36b708231ab" />
+
+<img width="946" height="652" alt="image" src="https://github.com/user-attachments/assets/729148ab-325b-4793-a0f1-c93e5a83c130" />
+
+<img width="1294" height="763" alt="image" src="https://github.com/user-attachments/assets/866bd3df-3270-4217-b191-20cf198de610" />
+
 
 > **확인문제: 다음 SQL문의 빈칸에 들어갈 WHERE절의 문법으로 틀린 것을 고르세요.**
 
@@ -68,13 +139,72 @@ WHERE ________;
 ```
 
 ```
-여기에 답을 적어주세요!
+1
 ```
 
 
 ## 2. 좀 더 깊게 알아보는 SELECT문
 
-<!-- ORDER BY절과 GROUP BY절에 관해 배우게 된 점을 적어주세요. -->
+### ORDER BY
+- 결과가 출력되는 순서를 조절
+- ASC: 오름차순
+- DESC: 내림차순
+
+- LIMIT: 출력하는 개수 제한
+  - LIMIT 3,2 -> 3번째부터 2건만 조회
+ 
+- DISTINCT: 중복된 데이터 1개만
+  ```
+  SELECT
+  DISTINCT addr
+  FROM member
+  ```
+
+### GROUP BY
+- 그룹으로 묶어주는 역할
+- 집계함수가 주로 함께 쓰임
+    - SUM(): 합계
+    - AVG(): 평균
+    - MIN()/MAX(): 최솟값, 최댓값
+    - COUNT(): 행의 개수 -> COUNT(*): NULL인 값은 제외 
+    - COUNT(DISTINCT): 중복 한 개만 인정한 행의 개수
+ 
+  - HAVING
+    - 집계함수에 대해서 조건을 제한
+    - GROUP BY절 다음에
+
+### ORDER BY
+- 결과가 출력되는 순서를 조절하는 절
+- **ASC**: 오름차순 (기본값)
+- **DESC**: 내림차순
+
+#### LIMIT
+- 출력하는 데이터의 개수를 제한
+- `LIMIT 3, 2`: 3번째 위치부터 2건만 조회 (시작 위치는 0부터 계산)
+
+#### DISTINCT
+- 조회된 결과에서 중복된 데이터를 1개만 남기고 보여줌
+```sql
+SELECT DISTINCT addr
+    FROM member;
+```
+
+---
+
+### GROUP BY
+- 데이터를 특정 기준으로 묶어주는 역할
+- 집계함수와 주로 함께 쓰임
+    - **SUM()**: 합계
+    - **AVG()**: 평균
+    - **MIN() / MAX()**: 최솟값 / 최댓값
+    - **COUNT()**: 행의 개수
+        - `COUNT(*)`: NULL 값을 포함한 모든 행의 개수
+        - `COUNT(열_이름)`: NULL 값을 제외한 행의 개수
+    - **COUNT(DISTINCT 열_이름)**: 중복을 제거한 고유한 행의 개수
+
+#### HAVING
+- 집계함수의 결과에 대해서 조건을 제한할 때 사용
+- 일반 조건절과 달리 반드시 `GROUP BY` 절 다음에 위치해야 함
 
 > **확인문제: 다음 표는 주요 집계함수를 정리한 것입니다. 각 설명에 해당하는 올바른 함수명을 기호에 맞게 작성하세요.**
 
@@ -89,14 +219,39 @@ WHERE ________;
 
 ```
 여기에 답을 적어주세요!
-(ㄱ) 
-(ㄴ) 
-(ㄷ) 
-(ㄹ) 
+(ㄱ) AVG()
+(ㄴ) MIN()
+(ㄷ) COUNT()
+(ㄹ) COUNT(DISDINT ID)
 ```
 
 
 ## 3. 데이터 변경을 위한 SQL문
+
+### INSERT
+
+```
+INSERT INTO 테이블 [{열1,열2,...}] VALUES (값1, 값2, ...)
+```
+
+- 열 이름은 생략가능 -> 값의 개수가 열의 갯수와 동일해야함
+    - 특정 열의 값을 비워두고 싶다면 NULL로 입력
+- 열 이름 적는다면 순서 상관 X
+- **AUTO_INCREMENT**: 1부터 증가하는 값 입력
+    - 이 경우 INSERT로 값을 입력할 때 해당 열이 없다고 생각하고 입력
+    - PRIMARY KEY로 지정해야함
+    - 100부터 시작하도록 변경
+    - ```
+      ALTER TABLE TABLE_A AUTO=100;
+      ```
+    - 1000, 1003, 1006 ... 으로 설정 -> **@@AUTO_INCREMENT_INCREMENT**
+    - ```
+      ALTER TABLE TABLE_A AUTO=100; -> 시작값은 1000으로 지정
+      SET @@AUTO_INCREMENT_INCREMENT=3; -> 증가값은 3으로 지정
+      ```
+      
+    
+      
 
 <!-- INSERT문, UPDATE문, DELETE문에 관해 배우게 된 점을 적어주세요. -->
 
