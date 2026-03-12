@@ -146,34 +146,6 @@ WHERE ________;
 ## 2. 좀 더 깊게 알아보는 SELECT문
 
 ### ORDER BY
-- 결과가 출력되는 순서를 조절
-- ASC: 오름차순
-- DESC: 내림차순
-
-- LIMIT: 출력하는 개수 제한
-  - LIMIT 3,2 -> 3번째부터 2건만 조회
- 
-- DISTINCT: 중복된 데이터 1개만
-  ```
-  SELECT
-  DISTINCT addr
-  FROM member
-  ```
-
-### GROUP BY
-- 그룹으로 묶어주는 역할
-- 집계함수가 주로 함께 쓰임
-    - SUM(): 합계
-    - AVG(): 평균
-    - MIN()/MAX(): 최솟값, 최댓값
-    - COUNT(): 행의 개수 -> COUNT(*): NULL인 값은 제외 
-    - COUNT(DISTINCT): 중복 한 개만 인정한 행의 개수
- 
-  - HAVING
-    - 집계함수에 대해서 조건을 제한
-    - GROUP BY절 다음에
-
-### ORDER BY
 - 결과가 출력되는 순서를 조절하는 절
 - **ASC**: 오름차순 (기본값)
 - **DESC**: 내림차순
@@ -228,68 +200,73 @@ SELECT DISTINCT addr
 
 ## 3. 데이터 변경을 위한 SQL문
 
-### INSERT
+### 1. INSERT: 데이터 입력
 
-```
-INSERT INTO 테이블 [{열1,열2,...}] VALUES (값1, 값2, ...)
-```
-
-- 열 이름은 생략가능 -> 값의 개수가 열의 갯수와 동일해야함
-    - 특정 열의 값을 비워두고 싶다면 NULL로 입력
-- 열 이름 적는다면 순서 상관 X
-- **AUTO_INCREMENT**: 1부터 증가하는 값 입력
-    - 이 경우 INSERT로 값을 입력할 때 해당 열이 없다고 생각하고 입력
-    - PRIMARY KEY로 지정해야함
-    - 100부터 시작하도록 변경
-    - ```
-      ALTER TABLE TABLE_A AUTO=100;
-      ```
-    - 1000, 1003, 1006 ... 으로 설정 -> **@@AUTO_INCREMENT_INCREMENT**
-    - ```
-      ALTER TABLE TABLE_A AUTO=100; -> 시작값은 1000으로 지정
-      SET @@AUTO_INCREMENT_INCREMENT=3; -> 증가값은 3으로 지정
-      ```
-
-
-- DESC TABLE: 테이블의 구조를 출력
-
-- ```
-  INSERT INTO city_pop
-      SELECT name, population FROM world.city;
-  ```
-  -> world.city에 있던 name과 population 열을 city_pop에 입력하는 쿼리
-  
-### UPDATE
-- 데이터 수정
-```
-UPDATE TABLE
-SET 열1=값1, 열2=값2,...
-WHERE 조건;
+```sql
+INSERT INTO 테이블 [(열1, 열2, ...)] VALUES (값1, 값2, ...);
 ```
 
-EX) 전체 인구 데이터를 10,000명 단위로 바꾸기
+- **열 이름 생략 가능**: 단, 입력하는 값의 개수가 테이블의 전체 열 개수와 완벽히 동일해야 함
+  - 특정 열의 값을 비워두고 싶다면 `NULL`
+- **열 이름 명시**: 열 이름을 직접 적는다면, 테이블에 정의된 순서와 상관없이 입력 가능
+
+#### AUTO_INCREMENT (자동 증가)
+- 1부터 자동으로 숫자가 증가하며 입력되는 기능
+- `INSERT`로 값을 입력할 때 해당 열은 자동 입력되므로 빈자리(`NULL`)로 
+- 해당 열은 반드시 **PRIMARY KEY(기본 키)**로 지정되어야 함
+
+**시작 값 변경 (예: 100부터 시작)**
+```sql
+ALTER TABLE 테이블이름 AUTO_INCREMENT=100;
 ```
-UPDATE CITY_POP
+
+**시작 값 및 증가 값 동시 변경 (예: 1000부터 3씩 증가)**
+```sql
+ALTER TABLE 테이블이름 AUTO_INCREMENT=1000;
+SET @@AUTO_INCREMENT_INCREMENT=3;
+```
+
+#### 구조 확인 및 대량 데이터 입력
+- **`DESC 테이블이름;`**: 테이블의 구조(열 이름, 데이터 타입 등)를 출력하여 확인
+- **`INSERT INTO ~ SELECT`**: 다른 테이블의 데이터를 한 번에 가져와서 입력
+```sql
+INSERT INTO city_pop
+    SELECT name, population FROM world.city;
+```
+(world.city 테이블에 있던 name과 population 열을 city_pop 테이블로 한 번에 복사)
+
+---
+
+### 2. UPDATE: 데이터 수정
+
+```sql
+UPDATE 테이블이름
+    SET 열1=값1, 열2=값2, ...
+    WHERE 조건;
+```
+
+**예시: 전체 인구 데이터를 10,000명 단위로 일괄 변경**
+```sql
+UPDATE city_pop
     SET population = population / 10000;
-SELECT * FROM CITY_POP LIMIT 5;
+SELECT * FROM city_pop LIMIT 5;
 ```
 
+---
 
-### DELETE
-- 행 데이터를 삭제
+### 3. DELETE: 데이터 삭제 (행 단위)
+
+```sql
+DELETE FROM 테이블이름 WHERE 조건;
 ```
-DELETE FROM TABLE WHERE 조건;
-```
 
+---
 
-### 대용량 테이블의 삭제
+### 4. 대용량 테이블의 삭제 (차이점 비교)
 
-- DELETE: 오래 걸림, 빈 테이블을 남김 
-- DROP: 테이블 자체를 삭제
-- TRUNCATE: DELETE와 동일한 효과, 속도 매우 빠름 , 빈테이블이 남음 
-
-
-
+- **DELETE**:시간이 오래 걸림, 빈 테이블 구조(틀) 남김
+- **DROP**: 테이블 자체를 완전히 날려버림 (빈 테이블조차 남지 않음)
+- **TRUNCATE**: `DELETE`와 동일하게 데이터만 모두 지우고 빈 테이블을 남기지만, 속도가 매우 빠름 (전체 데이터 삭제 시 권장)
 
 
 
