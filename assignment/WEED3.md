@@ -150,7 +150,8 @@ https://www.youtube.com/watch?v=IOCsreDYqFE&list=PLVsNizTWUw7GCfy5RH27cQL5MeKYnl
 - TIME은 시간만
 - DATETIME은 둘 다 
 
-
+<br>
+<br>
 
 ### 변수의 사용
 
@@ -260,7 +261,112 @@ CAST()
 <!-- 두 테이블을 묶는 조인에 관해 배우게 된 점을 적어주세요. -->
 
 
+### 내부 조인
 
+#### 1. 일대다 관계의 이해 
+- 두 테이블의 조인을 위해서는 테이블이 일대다 관계로 연결되어야 함
+- 회원 테이블의 아이디, 구매 테이블의 아이디 -> 일대다 관계
+- 일대다 관계: 한쪽 테이블에는 하나의 값만 존재해야하지만, 연결된 다른 테이블에는 여러 개의 값이 존재할 수 있는 관계
+
+EX) 
+회원 테이블 -> 블랙핑크의 아이디 'BLK' -> 1명 => 기본 키 
+
+구매 테이블 -> 3개의 BLK 존재 
+
+회원은 한 명, 이 회원은 구매를 여러 번 할 수 있다 -> 일대다 관계
+<br>
+
+구매 테이블의 아이디 => FK
+
+
+<br>
+<br>
+
+#### 2. 내부 조인의 기본
+```
+SELECT <열 목록>
+FROM <첫 번째 테이블>
+  INNER JOIN <두 번째 테이블>
+  ON <조인될 조건>
+[WHERE 검색 조건]
+```
+교집합
+
+
+#### 3. 내부 조인의 간결한 표현 
+- 테이블_이름.열_이름 형식으로 작성
+- 테이블의 이름 뒤에 별칭 부여
+
+
+#### 4. 내부 조인의 활용
+- 회원 아이디와 구매 아이디를 키로 조인을 할 경우
+- 자동적으로 구매한 이력이 있는 아이디만 결과로 출력
+
+
+<br>
+<br>
+
+### 중복된 결과 1개만 출력하기 
+```
+SELECT DISTINCT M.mem_id, M.mem_name, M.addr
+FROM buy B
+INNER JOIN member M
+ON B.mem_id = M.mem_id
+ORDER BY M.mem_id
+```
+ 
+구매한 이력이 있는 회원을 중복없이 출력
+
+### 외부 조인
+한쪽에만 데이터가 있어도 결과가 나옴
+
+
+#### 1. 외부 조인의 기본
+
+```
+SELECT <열 목록>
+FROM <첫 번째 테이블(LEFT 테이블)>
+  <LEFT|RIGHT|FULL> OUTER JOIN <두 번째 테이블(RIGHT)>
+  ON <조인될 조건>
+[WHERE 검색 조건]
+```
+
+#### 2. 외부 조인의 활용
+- FULL OUTER JOIN = LEFT + RIGHT JOIN
+
+
+### 기타 조인 
+
+#### 1. 상호조인 
+- CROSS JOIN
+- 한쪽 테이블의 모든 행과 다른 쪽 테이블의 모든 행을 조인
+- 전체 행 개수 = 두 테이블의 각 행의 개수를 곱한 개수
+
+**<상호 조인의 특징>**
+1. ON 구문 사용X
+2. 결과 내용 의미X (랜덤으로 조인)
+3. 주 용도는 테스트를 위한 대용량 데이터 생성
+
+<br>
+
+#### 2. 자체 조인
+- SELF JOIN
+- 자신이 자신과 INNER 조인
+- 서로 다른 별칭을 붙임 
+```
+SELECT <열 목록>
+FROM <테이블> 별칭 A
+  INNER JOIN <테이블> 별칭 B
+  ON <조인될 조건>
+[WHERE 검색 조건]
+```
+EX) 직원의 직속상관의 연락처를 표기하는 쿼리
+```
+SELECT A.emp "직원", B.emp "직속상관", B.phone "직속상관연락처"
+FROM emp_table A
+INNER JOIN emp_table B
+ON A.manager = B.emp
+```
 
 
 
@@ -289,7 +395,12 @@ SELECT DISTINCT M.mem_id, B.prod_name, M.mem_name, M.addr
 4. WHERE B.prod_name IS NULL
 ```
 ```
-여기에 답과 그 이유를 적어주세요!
+4. WHERE B.prod_name IS NULL
+
+조건절에 해당하므로 3,4 중 하나임
+BUT HAVING은 GROUP BY 와 함께 쓰임
+따라서 답은 4
+
 ```
 
 ## 3. SQL 프로그래밍 
