@@ -406,6 +406,54 @@ BUT HAVING은 GROUP BY 와 함께 쓰임
 ## 3. SQL 프로그래밍 
 
 <!-- IF문, CASE문, WHILE문, 동적 SQL에 관해 배우게 된 점을 적어주세요. -->
+### IF문
+#### 1. IF 문의 기본 형식
+```
+IF <조건식> THEN
+~~~
+END IF ;
+```
+- ~~: 두 문장 이상 처리
+-   BEGIN~END로 묶어야함
+<br>
+
+EX)
+```
+CREATE PROCEDURE A
+BEGIN
+  IF 100 = 100 THEN
+    SELECT '100은 100과 같습니다.';
+END IF;
+
+```
+
+
+#### 2. IF~ELSE문
+```
+BEGIN 
+  DECLARE NUM INT;  1
+  SET NUM = 200;  2
+  IF NUM = 100 THEN
+    SELECT '100입니다';
+  ELSE
+    SELECT '100이 아닙니다';
+  END IF 
+```
+
+1 DECLARE 예약어로 NUM 변수 선언, 제일 뒤에는 변수의 데이터 형식을 INT로 
+2 SET 예약어로 NUM 에 200 대입
+
+
+#### 3. IF 문의 활용
+
+
+
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
 
 > **확인문제: 다음은 CASE 문의 형식입니다. 빈칸에 들어갈 가장 적절한 명령어를 보기에서 고르세요..**
 
