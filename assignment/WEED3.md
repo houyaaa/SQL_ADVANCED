@@ -65,7 +65,7 @@ https://www.youtube.com/watch?v=IOCsreDYqFE&list=PLVsNizTWUw7GCfy5RH27cQL5MeKYnl
 
 - 0부터 시작하는 만큼 줄어든 범위가 그 뒤에 덧붙여짐
 
-- 추가학습) 효율(성능+저장공간+구조)의 이유로 적절한 데이터 형식을 고르는 것이 필수적
+✨추가학습: 효율(성능+저장공간+구조)의 이유로 적절한 데이터 형식을 고르는 것이 필수적
 
 
 
@@ -104,12 +104,133 @@ https://www.youtube.com/watch?v=IOCsreDYqFE&list=PLVsNizTWUw7GCfy5RH27cQL5MeKYnl
   ▸ 사칙연산
   ▸ 순서 의미
 
-  ex) 전화번호 -> 글자로 취
+  ex) 전화번호 -> 글자로 취급
 
-
+<br>
 
 
 #### 3. 대량의 데이터 형식
+
+- 더 큰 데이터를 저장하기 위해서 
+
+<img width="709" height="179" alt="image" src="https://github.com/user-attachments/assets/0ddd2064-a0e3-4d43-88c9-6835ed22ae88" />
+
+
+- TEXT: 65,535자
+- LONGTEXT: 42억자
+
+- BLOB: Binary Long Object
+  - 글자x, 이미지 동영상 데이터
+
+✨ 추가학습: BLOB는 링크로 저장되어있는 것인가?
+-> NOPE, 이미지 파일, 동영상 파일이 그대로 들어가 있음
+-> 따라서 실무에서는 자주 쓰이지 않음 (DB가 무거워짐, 성능이 떨어짐)
+
+<br>
+
+#### 4. 실수형
+
+| 데이터 형식 | 바이트 수 | 설명 |
+|------------|----------|------|
+| FLOAT      | 4        | 소수점 아래 7자리까지 표현 |
+| DOUBLE     | 8        | 소수점 아래 15자리까지 표현 |
+
+
+
+#### 5. 날짜형
+
+| 데이터 형식 | 바이트 수 | 설명 |
+|------------|----------|------|
+| DATE       | 3        | 날짜만 저장, YYYY-MM-DD 형식 |
+| TIME       | 3        | 시간만 저장, HH:MM:SS 형식 |
+| DATETIME   | 8        | 날짜 및 시간 저장, YYYY-MM-DD HH:MM:SS 형식 |
+
+
+- DATE는 날짜만
+- TIME은 시간만
+- DATETIME은 둘 다 
+
+
+
+### 변수의 사용
+
+```
+SET @변수이름 = 변수의 값;
+SELECT @변수이름;
+```
+
+- 변수의 선언 및 값 대입
+- 변수의 값 출력
+
+
+#### PREPARE, EXECUTE
+```
+SET @CNT = 3;
+PREPARE mySQL FROM 'SELECT mem_name, height FROM member ORDER BY height LIMIT?';
+EXECUTE mySQL USING @CNT;
+```
+
+- @CNT = N 에 무엇을 적는지에 따라 상위 N개가 출력됨
+
+<br>
+
+### 데이터 형 변환
+- 형 변환: 정수형 <-> 문자형
+    - 명시적인 변환: 직접 함수 사용
+    - 암시적인 변환: 자연스럽게 
+ 
+#### 1. 함수를 이용한 명시적 변환
+- CAST()
+- CONVERT()
+
+```
+CAST( 값 AS 데이터_형식 [(길이)])
+CONVERT( 값, 데이터_형식 [(길이)])
+```
+
+EX)
+```
+SELECT CAST(AVG(price) AS SIGNED) '평균 가격' FROM buy;
+```
+
+- SIGNED: 부호가 있는 정수
+- UNSIGNED: 부호가 없는 정수
+
+```
+SELECT
+  num,
+  CONCAT(CAST(price AS CHAR), 'X', CAST(amount AS CHAR),'=') '가격X수량',
+  price*amount '구매액'
+FROM buy
+```
+
+- CONCAT(): 문자를 이어주는 역할
+
+
+#### 2. 암시적인 변환 
+
+```
+SELECT '100'+'200';
+```
+>>> 300
+>>> 자동으로 숫자 100, 200으로 변환됨
+
+```
+SELECT CONCAT('100','200');
+```
+>>> 100200
+
+
+```
+SELECT CONCAT(100,'200');
+SELECT 100+'200';
+```
+>>> 100200
+>>> CONCAT -> 숫자 100이 문자 '100'으로 변환되어 연결
+>>> 300
+>>> CONCAT X -> 200이 숫자로 변환 
+  
+
 
 <br>
 <br>
@@ -129,13 +250,26 @@ CONVERT() / DATA() / CAST() / MOVE() / TYPE() / SUM() / AVG() / CURRENT_DATE()
 ```
 
 ```
-여기에 답을 적어주세요!
+CONVERT()
+CAST()
 ```
 
 
 ## 2. 두 테이블을 묶는 조인
 
 <!-- 두 테이블을 묶는 조인에 관해 배우게 된 점을 적어주세요. -->
+
+
+
+
+
+
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
 
 > **확인문제: 다음 SQL은 회원으로 가입만 하고, 한 번도 구매한 적이 없는 회원의 목록을 조회하는 쿼리입니다. 빈칸에 들어갈 가장 적절한 구문을 고르세요..**
 
