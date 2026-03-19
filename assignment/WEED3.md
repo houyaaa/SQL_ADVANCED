@@ -269,11 +269,11 @@ CAST()
 - 일대다 관계: 한쪽 테이블에는 하나의 값만 존재해야하지만, 연결된 다른 테이블에는 여러 개의 값이 존재할 수 있는 관계
 
 EX) 
-회원 테이블 -> 블랙핑크의 아이디 'BLK' -> 1명 => 기본 키 
+회원 테이블 -> 블랙핑크의 아이디 'BLK' ▸ 1명 ▸ 기본 키 
 
 구매 테이블 -> 3개의 BLK 존재 
 
-회원은 한 명, 이 회원은 구매를 여러 번 할 수 있다 -> 일대다 관계
+회원은 한 명, 이 회원은 구매를 여러 번 할 수 있다 ▸ 일대다 관계
 <br>
 
 구매 테이블의 아이디 => FK
@@ -368,7 +368,7 @@ INNER JOIN emp_table B
 ON A.manager = B.emp
 ```
 
-
+ 
 
 <br>
 <br>
@@ -445,8 +445,36 @@ BEGIN
 
 
 #### 3. IF 문의 활용
+```
+IF (DAYS/365) >= 5 THEN
+  SELECT CONCAT("데뷔한 지', DAYS, '일이나 지났습니다.');
+ELSE
+  SELECT '데뷔한 지"+ DAYS + '일밖에 안되었네요.;
+```
+- INTO 변수: 결과를 변수에 저장
+- CURRENT_DATE(): 현재 날짜
+- DATEDIFF(): 날짜 차이
 
 
+<br>
+<br>
+### CASE 문
+#### 1. CASE 문의 기본 형식
+
+```
+CASE 
+  WHEN 조건1 THEN
+    SQL 문장들1
+  WHEN 조건2 THEN
+    SQL 문장들2
+  WHEN 조건3 THEN
+    SQL 문장들3
+  ELSE
+    SQL 문장들4
+END CASE;
+```
+
+#### 2. CASE 문의 활용
 
 <br>
 <br>
