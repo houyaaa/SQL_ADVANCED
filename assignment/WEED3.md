@@ -155,7 +155,7 @@ https://www.youtube.com/watch?v=IOCsreDYqFE&list=PLVsNizTWUw7GCfy5RH27cQL5MeKYnl
 
 ### 변수의 사용
 
-```
+```sql
 SET @변수이름 = 변수의 값;
 SELECT @변수이름;
 ```
@@ -165,7 +165,7 @@ SELECT @변수이름;
 
 
 #### PREPARE, EXECUTE
-```
+```sql
 SET @CNT = 3;
 PREPARE mySQL FROM 'SELECT mem_name, height FROM member ORDER BY height LIMIT?';
 EXECUTE mySQL USING @CNT;
@@ -184,20 +184,20 @@ EXECUTE mySQL USING @CNT;
 - CAST()
 - CONVERT()
 
-```
+```sql
 CAST( 값 AS 데이터_형식 [(길이)])
 CONVERT( 값, 데이터_형식 [(길이)])
 ```
 
 EX)
-```
+```sql
 SELECT CAST(AVG(price) AS SIGNED) '평균 가격' FROM buy;
 ```
 
 - SIGNED: 부호가 있는 정수
 - UNSIGNED: 부호가 없는 정수
 
-```
+```sql
 SELECT
   num,
   CONCAT(CAST(price AS CHAR), 'X', CAST(amount AS CHAR),'=') '가격X수량',
@@ -210,19 +210,19 @@ FROM buy
 
 #### 2. 암시적인 변환 
 
-```
+```sql
 SELECT '100'+'200';
 ```
 > 300
 >> 자동으로 숫자 100, 200으로 변환됨
 
-```
+```sql
 SELECT CONCAT('100','200');
 ```
 > 100200
 
 
-```
+```sql
 SELECT CONCAT(100,'200');
 SELECT 100+'200';
 ```
@@ -283,7 +283,7 @@ EX)
 <br>
 
 #### 2. 내부 조인의 기본
-```
+```sql
 SELECT <열 목록>
 FROM <첫 번째 테이블>
   INNER JOIN <두 번째 테이블>
@@ -307,7 +307,7 @@ FROM <첫 번째 테이블>
 <br>
 
 ### 중복된 결과 1개만 출력하기 
-```
+```sql
 SELECT DISTINCT M.mem_id, M.mem_name, M.addr
 FROM buy B
 INNER JOIN member M
@@ -323,7 +323,7 @@ ORDER BY M.mem_id
 
 #### 1. 외부 조인의 기본
 
-```
+```sql
 SELECT <열 목록>
 FROM <첫 번째 테이블(LEFT 테이블)>
   <LEFT|RIGHT|FULL> OUTER JOIN <두 번째 테이블(RIGHT)>
@@ -353,7 +353,7 @@ FROM <첫 번째 테이블(LEFT 테이블)>
 - SELF JOIN
 - 자신이 자신과 INNER 조인
 - 서로 다른 별칭을 붙임 
-```
+```sql
 SELECT <열 목록>
 FROM <테이블> 별칭 A
   INNER JOIN <테이블> 별칭 B
@@ -361,7 +361,7 @@ FROM <테이블> 별칭 A
 [WHERE 검색 조건]
 ```
 EX) 직원의 직속상관의 연락처를 표기하는 쿼리
-```
+```sql
 SELECT A.emp "직원", B.emp "직속상관", B.phone "직속상관연락처"
 FROM emp_table A
 INNER JOIN emp_table B
@@ -394,7 +394,7 @@ SELECT DISTINCT M.mem_id, B.prod_name, M.mem_name, M.addr
 3. HAVING B.prod_name IS NULL
 4. WHERE B.prod_name IS NULL
 ```
-```
+```sql
 4. WHERE B.prod_name IS NULL
 
 조건절에 해당하므로 3,4 중 하나임
@@ -408,7 +408,7 @@ BUT HAVING은 GROUP BY 와 함께 쓰임
 <!-- IF문, CASE문, WHILE문, 동적 SQL에 관해 배우게 된 점을 적어주세요. -->
 ### IF문
 #### 1. IF 문의 기본 형식
-```
+```sql
 IF <조건식> THEN
 ~~~
 END IF ;
@@ -418,7 +418,7 @@ END IF ;
 <br>
 
 EX)
-```
+```sql
 CREATE PROCEDURE A
 BEGIN
   IF 100 = 100 THEN
@@ -429,7 +429,7 @@ END IF;
 
 
 #### 2. IF~ELSE문
-```
+```sql
 BEGIN 
   DECLARE NUM INT;  1
   SET NUM = 200;  2
@@ -445,7 +445,7 @@ BEGIN
 
 
 #### 3. IF 문의 활용
-```
+```sql
 IF (DAYS/365) >= 5 THEN
   SELECT CONCAT("데뷔한 지', DAYS, '일이나 지났습니다.');
 ELSE
@@ -458,10 +458,12 @@ ELSE
 
 <br>
 <br>
+
 ### CASE 문
+
 #### 1. CASE 문의 기본 형식
 
-```
+```sql
 CASE 
   WHEN 조건1 THEN
     SQL 문장들1
@@ -475,6 +477,75 @@ END CASE;
 ```
 
 #### 2. CASE 문의 활용
+```sql
+CASE
+  WHEN (총구매액 >= 1500) THEN '최우수고객'
+  WHEN (총구매액 >= 1000) THEN '우수고객'
+  WHEN (총구매액 >= 1) THEN '일반고객'
+  ELSE '유령고객'
+END
+```
+
+
+### WHILE 문
+조건식이 참인 동안에 SQL문장들을 계속 반복 
+
+#### 1. WHILE문의 기본 형식
+```
+WHILE <조건식> DO
+  SQL 문장들
+END WHILE;
+```
+
+#### 2. WHILE문의 응용
+1에서 100까지 합계에서 4의 배수 제외
+<br>
+▸ ITERATE[레이블]: 지정한 레이블로 가서 계속 진행 
+<br>
+▸ LEAVE[레이블]:지정한 레이블을 빠져나감 = WHILE문 종료
+<br>
+<br>
+<br>
+<br>
+<img width="523" height="389" alt="image" src="https://github.com/user-attachments/assets/87c0024b-b51e-473c-89e2-4129621c19fe" />
+
+```sql
+myWHILE:
+WHILE (i <=100) DO -- i가 100 이하일 동안 계속 반복
+  IF (i%4=0) THEN
+    SET i = i+1;
+    ITERATE myWHILE; -- 지정한 LABEL문으로 가서 계속 진행
+  END IF; -- i가 4의 배수라면 i를 1 증가시키고, ITERATE를 만나서 myWHILE로
+-- 즉, hap에 더하지 않
+
+  SET hap = hap + i; -- hap 이 1000을 초과하면 LEAVE를 만나서 레이블을 빠져나감
+  IF (hap > 1000) THEN
+    LEAVE myWHILE;
+  END IF;
+  SET i = i+1;
+END WHILE;
+```
+
+
+### 동적 SQL
+
+#### PREPARE 와 EXECUTE
+<br>
+▸ PREPARE: SQL문을 실행하지 않고, 미리 준비만
+<br>
+▸ EXECUTE: 준비한 SQL문을 실행
+<br>
+▸ DEALLOCATE PREPARE: 문장 해제  
+<br>
+
+```sql
+use market_db;
+PREPARE myQuery FROM 'SELECT * FROM member WHERE mem_id='BLK';
+EXECUTE myQuery;
+DEALLOCATE PREPARE myQuery;
+```
+
+
 
 <br>
 <br>
@@ -501,8 +572,8 @@ WHEN / THEN / CURRENT / DATE / TIME / IF / END IF / CASE
 
 ```
 여기에 답을 적어주세요!
-(1)
-(2) 
+(1) WHEN
+(2) CASE
 ```
 
 
@@ -568,25 +639,47 @@ INSERT INTO orders VALUES
 1. **데이터 형식 변환**
    - orders 테이블의 `order_date_str`을 DATE 형식으로 변환하여 조회하시오.
    (힌트: STR_TO_DATE 사용)
+<br>
+<br>
+<br>
+
+<img width="1867" height="826" alt="image" src="https://github.com/user-attachments/assets/81e13af1-f0b5-4334-8cf5-d2a52061139e" />
+<br><br><br>
 
 2. **데이터 형식 변환**
    - orders 테이블의 `amount_str`을 숫자형으로 변환하여 조회하시오.
+<br><br><br>
+<img width="1134" height="738" alt="image" src="https://github.com/user-attachments/assets/bb3853a4-74ba-40b1-85eb-90fffb9e29d9" />
+
+✨추가학습: INT가 아니라 SIGNED를 쓴다 
+<br><br><br>
 
 3. **내부 조인 (INNER JOIN)**
    - customers와 orders를 customer_id 기준으로 내부 조인하여
      고객 이름(name)과 주문 번호(order_id)를 함께 조회하시오.
+<br><br><br>
+<img width="1010" height="725" alt="image" src="https://github.com/user-attachments/assets/13e82fa3-ee21-4fc3-9f06-f5307348f3f1" />
+
+<br><br><br>
 
 4. **외부 조인 (LEFT JOIN)**
    - customers를 기준으로 LEFT JOIN을 수행하여,
      주문이 없는 고객도 함께 조회하시오.
+
+<br><br><br>
+<img width="843" height="530" alt="image" src="https://github.com/user-attachments/assets/7bdf567e-adba-43a3-8966-42061df3052a" />
+
+<br><br><br>
 
 5. **스토어드 프로시저 (IF문 사용)**
    - 입력받은 금액이 10000 이상이면 '고액 주문',
      그렇지 않으면 '일반 주문'을 출력하는
      프로시저를 생성하시오.
    - 생성 후 CALL로 실행 결과를 확인하시오.
-
-
+<br><br><br>
+<img width="718" height="563" alt="image" src="https://github.com/user-attachments/assets/c1b317ba-6623-49a6-8aab-d0158fe70cac" />
+<br>
+✨추가학습: 스토어드 프로시저 복습하기 !!
 <!-- 이 부분을 지우고 인증사진을 제출해주세요.-->
 
 
