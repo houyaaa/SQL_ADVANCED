@@ -44,15 +44,30 @@ https://www.youtube.com/watch?v=JrXWxku7ZIM&list=PLVsNizTWUw7GCfy5RH27cQL5MeKYnl
 # 1️⃣ 학습 내용 정리
 
 ## 1. 테이블 만들기 
+<br>
+<br>
 
-<!-- 이번 챕터에서 제시된 실습을 흐름에 맞게 진행한 후, 실습 과정이 보일 수 있도록 인증 사진을 2장 이상 제출해 주세요. -->
+<img width="1221" height="550" alt="image" src="https://github.com/user-attachments/assets/13b0dff9-b91e-4bfe-97cf-ebcbac22c861" />
 
-<!-- 이 부분을 지우고 인증사진을 제출해주세요.-->
+<img width="954" height="631" alt="image" src="https://github.com/user-attachments/assets/b8bf1d07-8e6d-4250-a565-fc53a13a7415" />
+
+<img width="706" height="315" alt="image" src="https://github.com/user-attachments/assets/14b23409-a25b-4c34-bc7e-6defce84525b" />
 
 
 ## 2. 제약조건으로 테이블을 견고하게 
 
-<!-- 제약조건에 관해 배우게 된 점을 적어주세요. -->
+제약조건: 데이터에 결함이 없도록 무결성을 지키기 위해 제한을 두는 기능
+
+오류가 적고 튼튼한 데이터 베이스 생성 가능
+
+- **기본키**: 행 데이터를 구분하는 고유한 식별자, 중복될 수 없고 NULL을 허용X
+- **외래키**: 두 테이블 사이의 관계를 연결하여 무결성 보장, 참조하는 기준 테이블의 열은 반드시 기본키 OR 고유 키
+    - CASCADE옵션: `ON UPDATE CASECADE`및 `ON DELETE CASCADE` 설정 -> 기준 테이블의 데이터 변경 OR 삭제 시 참조 테이블의 데이터도 자동으로 변경 및 삭제
+- **고유키**: 중복되지 않는 유일한 값을 이력해야하지만, 기본 키와 달리 NULL허용
+- 체크: 입력되는 데이터를 점검하여 지정된 조건에 맞는 데이터만 허용
+- 기본값: 값을 입력하지 않았을 때 자동으로 들어갈 값을 미리 지정
+
+
 
 > **확인문제: 다음 보기 중에서 각 문항이 설명하는 것을 고르세요.**
 
@@ -63,15 +78,21 @@ CHECK / DEFAULT / PRIMAY KEY / UNIQUE / NOT NULL / FOREIGN KEY
 
 ```
 여기에 답과 그 이유를 적어주세요!
-1. 입력되는 데이터가 조건에 맞는지 검사하는 기능:
-2. 값을 입력하지 않으면 자동으로 들어갈 값:
-3. 빈 값을 입력하는 것을 허용하지 않음: 
+1. 입력되는 데이터가 조건에 맞는지 검사하는 기능: CHECK
+2. 값을 입력하지 않으면 자동으로 들어갈 값: DEFAULT
+3. 빈 값을 입력하는 것을 허용하지 않음: PRIMARY KEY
 ```
 
 
 ## 3. 가상의 테이블: 뷰 
 
-<!-- 뷰에 관해 배우게 된 점을 적어주세요. -->
+뷰는 테이블과 동일하게 보이고 작동함
+BUT 실제로 데이터를 저장하고 있지는 않은 가상의 테이블
+뷰의 실체는 `SELECT문`, 뷰에 접근하면 내장된 쿼리가 실행되어 결과를 보여줌
+
+- 뷰를 사용하는 주요 이유
+    1. 보안: 사용자에게 연락처나 개인정보 같은 중요 열을 숨기고 필요한 열만 포함된 뷰를 제공하여 데이터 접근 권한을 제한할 수 있음
+    2. 복잡한 SQL 단순화: `JOIN`등이 포함된 길고 복잡한 쿼리를 뷰로 만들어 두면, 매번 복잡한 쿼리를 짤 필요없이 단순하게 조회 가능
 
 > **확인문제: 다음은 뷰의 특징입니다. 거리가 먼 것을 하나 고르세요.**
 
@@ -84,7 +105,7 @@ CHECK / DEFAULT / PRIMAY KEY / UNIQUE / NOT NULL / FOREIGN KEY
 ```
 
 ```
-여기에 답과 그 이유를 적어주세요!
+1. 개인정보와 같은 중요 열을 숨기고 필요한 열만 추출해서 뷰에 포함시킬 수 있음 
 ```
 
 
@@ -141,7 +162,14 @@ USE week4_db;
 1. 각 문제의 실행 결과가 보이도록 화면을 캡처합니다.
 2. 테이블 생성 결과, 데이터 삽입 결과, 뷰 생성 및 조회 결과가 모두 보이도록 제출합니다.
 
-<!-- 이 부분을 지우고 인증사진을 제출해주세요.-->
+<img width="593" height="545" alt="image" src="https://github.com/user-attachments/assets/8c47e04e-c804-4ec8-af75-6f982d569c28" />
+
+<img width="681" height="619" alt="image" src="https://github.com/user-attachments/assets/a19ed288-7e66-4f84-9e8c-96d4e39f3d2b" />
+
+<img width="627" height="414" alt="image" src="https://github.com/user-attachments/assets/56de4a72-2b63-45b2-9793-1d3f0b189294" />
+
+<img width="448" height="280" alt="image" src="https://github.com/user-attachments/assets/745ced98-072e-4885-a25d-1e70e3804414" />
+
 
 ### 🎉 수고하셨습니다.
 
