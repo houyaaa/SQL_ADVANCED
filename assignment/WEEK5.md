@@ -1,4 +1,4 @@
-# SQL_ADVANCED 5주차 정규 과제 
+<img width="586" height="514" alt="image" src="https://github.com/user-attachments/assets/03c86566-9e80-4758-8071-9cb9aec5af82" /># SQL_ADVANCED 5주차 정규 과제 
 
 📌SQL_ADVANCED 정규과제는 매주 정해진 분량의 『*혼자 공부하는 SQL*』 을 읽고 학습하는 것입니다. 이번주는 아래의 **SQL_ADVANCED_5th_TIL**에 나열된 분량을 읽고 공부하시면 됩니다.
 
@@ -48,12 +48,12 @@ https://www.youtube.com/watch?v=aiMSluMNzI8&list=PLVsNizTWUw7GCfy5RH27cQL5MeKYnl
 ### 인덱스
 - 데이터를 빠르게 찾을 수 있도록 도와주는 도구
 
-  1. 클러스터형 인덱스
+**1. 클러스터형 인덱스**
     - 기본 키로 지정하면 자동 생성
     - 테이블에 1개 생성 가능
     - 기본 키로 지정한 열을 기준으로 자동 정렬
  
-  2. 보조 인덱스
+ **2. 보조 인덱스**
     - 고유 키로 지정하면 자동 생성
     - 여러 개를 만들 수 있음
     - but 자동 정렬 x
@@ -92,7 +92,97 @@ https://www.youtube.com/watch?v=aiMSluMNzI8&list=PLVsNizTWUw7GCfy5RH27cQL5MeKYnl
 #### 자동으로 생성되는 인덱스
 - 인덱스는 테이블의 컬럼 단위에 생성
 - 하나의 열에는 하나의 인덱스 생성 가능
-- 
+
+
+```sql
+CREATE TABLE member
+( mem_id CHAR(8) NOT NULL PRIMARY KEY,
+mem_name VARCHAR(8) NOT NULL,
+mem_number INT NOT NULL
+...
+
+```
+
+- mem_id를 기본 키로 정의
+- 자동으로 mem_id열에 클러스터형 인덱스 생성
+- 기본 키는 테이블에 하나 = 클러스터형 인덱스 테이블에 한 개 
+- `SHOW INDEX`문을 사용하여 인덱스 정보 확인
+- `PRIMARY` = 클러스터형 인덱스
+- `col1` = col1열에 인덱스 생성
+- `Non_Unique = 1` = 고유하지 않다 = 중복 허용
+  
+
+<br>
+
+```sql
+CREATE TABLE table2 (
+  col1 INT PRIMARY KEY,
+  col2 INT UNIQUE, -- 고유키로 지정
+  col3 INT UNIQUE -- 고유 키로 지정
+);
+```
+- 보조 인덱스는 고유 키로 지정하면 자동으로 생성
+- 테이블당 여러 개 만들 수 있음
+
+<img width="755" height="437" alt="image" src="https://github.com/user-attachments/assets/6cd01afd-100b-432e-a93c-2eb613aa74d3" />
+
+#### 자동으로 정렬되는 클러스터형 인덱스
+- 어떤 열을 기본 키로 지정하면(클러스터형 인덱스가 생성되면) 그 열을 기준으로 자동 정렬
+
+
+
+<img width="715" height="494" alt="image" src="https://github.com/user-attachments/assets/e9026633-a330-4be8-ac12-72b266b96a82" />
+
+<img width="553" height="481" alt="image" src="https://github.com/user-attachments/assets/45cc171c-2872-4c67-b979-0469848f8694" />
+
+- `order by mem_id`을 추가했을 때와 같은 결과
+
+<br>
+
+**고유 키 변경하기**
+<br>
+
+<img width="768" height="490" alt="image" src="https://github.com/user-attachments/assets/d7ed570e-7ec1-4066-b1b2-cad524316f36" />
+
+
+<br>
+
+<br>
+
+<br>
+
+**행 추가하기**
+<br>
+<img width="741" height="578" alt="image" src="https://github.com/user-attachments/assets/4b123fc0-6e69-44a0-be3d-5680eaddd860" />
+<br>
+
+
+
+
+#### 정렬되지 않는 보조 인덱스
+
+- 고유 키로 지정 -> 보조 인덱스 생성
+- 보조 인덱스는 테이블에 여러 개 설정 가능
+
+<br>
+<img width="586" height="514" alt="image" src="https://github.com/user-attachments/assets/909d84bd-688b-407f-93e7-78f6fa9a2b45" />
+<br>
+- 고유 키로 지정된 보조 인덱스는 자동 정렬 x
+
+**비교**
+| 구분 | 클러스터형 인덱스 (Clustered Index) | 보조 인덱스 (Secondary Index) |
+| :--- | :--- | :--- |
+| **핵심 정의** | 데이터 자체가 물리적으로 정렬됨 | 별도의 공간에 색인 페이지만 정렬됨 |
+| **생성 기준** | `PRIMARY KEY` (기본키) | `UNIQUE` (고유키) 또는 일반 `INDEX` |
+| **테이블당 개수** | 오직 1개 | 여러 개 생성 가능 |
+| **비유** | **영어 사전** (내용 자체가 정렬) | **책 뒤쪽 찾아보기** (본문은 그대로) |
+
+
+<br>
+
+<br>
+
+<br>
 
 > **확인문제: 다음은 인덱스 종류와 관련된 설명입니다. 가장 거리가 먼 것을 하나 고르세요.**
 
@@ -105,14 +195,25 @@ https://www.youtube.com/watch?v=aiMSluMNzI8&list=PLVsNizTWUw7GCfy5RH27cQL5MeKYnl
 ```
 
 ```
-여기에 답과 그 이유를 적어주세요!
+4️⃣  `NOT NULL`이 아니라 `UNIQUE`
 ```
 
 
 ## 2. 인덱스의 내부 작동 
 
-<!-- 인덱스의 내부 작동에 관해 배우게 된 점을 적어주세요. -->
+<br>
 
+### 인덱스의 내부 작동 원리
+#### 균형 트리의 개념
+- **노드**: 데이터가 저장되는 공간
+  - **루트 노드**: 가장 상위 노드
+  - **리프 노드**: 가장 마지막에 존재하는 노드
+  - **중간 노드**: 위 두 노드에 끼인 노드들
+- 노드 = MySQL) 페이지
+  - 최소한의 저장 단위
+  - 16Kbyte
+
+- 데이터 검색 시 아주 뛰어난 성능
 > **확인문제: 다음 설명에서 빈칸에 공통으로 들어갈 용어를 쓰시오.**
 
 ```
