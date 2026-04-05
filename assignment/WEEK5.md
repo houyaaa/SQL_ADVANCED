@@ -1,4 +1,4 @@
-<img width="586" height="514" alt="image" src="https://github.com/user-attachments/assets/03c86566-9e80-4758-8071-9cb9aec5af82" /># SQL_ADVANCED 5주차 정규 과제 
+# SQL_ADVANCED 5주차 정규 과제 
 
 📌SQL_ADVANCED 정규과제는 매주 정해진 분량의 『*혼자 공부하는 SQL*』 을 읽고 학습하는 것입니다. 이번주는 아래의 **SQL_ADVANCED_5th_TIL**에 나열된 분량을 읽고 공부하시면 됩니다.
 
@@ -167,6 +167,8 @@ CREATE TABLE table2 (
 <br>
 <img width="586" height="514" alt="image" src="https://github.com/user-attachments/assets/909d84bd-688b-407f-93e7-78f6fa9a2b45" />
 <br>
+<img width="586" height="514" alt="image" src="https://github.com/user-attachments/assets/03c86566-9e80-4758-8071-9cb9aec5af82" />
+
 - 고유 키로 지정된 보조 인덱스는 자동 정렬 x
 
 **비교**
@@ -214,6 +216,52 @@ CREATE TABLE table2 (
   - 16Kbyte
 
 - 데이터 검색 시 아주 뛰어난 성능
+- 균형 트리에서 검색하면 루트 페이지부터 검색
+
+
+<br>
+
+#### 균형 트리의 페이지 분할
+- 인덱스를 구성하면 데이터 변경작업(INSERT, UPDATEM DELETE) 시 성능이 나빠짐
+  - 이유: 페이지분할
+  - **페이지분할**: 새로운 페이지를 준비해서 데이터를 나누는 작업
+
+
+
+<br>
+
+
+### 인덱스의 구조
+#### 클러스터형 인덱스 구성하기
+
+<br>
+<img width="809" height="743" alt="image" src="https://github.com/user-attachments/assets/71fc1c4e-64a0-4a14-9424-8553bffc6aac" />
+
+#### 보조 인덱스 구성하기 
+
+<br>
+<img width="730" height="693" alt="image" src="https://github.com/user-attachments/assets/af063d7f-04ea-43eb-805b-250765041f9e" />
+
+
+<br>
+
+- 보조 인덱스가 생성되었음에도 입력한 것과 순서 동일
+- 보조 인덱스는 데이터 페이지를 건들이지 X
+- 별도의 장소에 인덱스 페이지 생성
+- 데이터의 위치 -> **페이지 번호 + #위치**로 기록 
+
+<br>
+
+#### 인덱스에서 데이터 검색하기
+**인덱스 검색**을 통해 클러스터형 인덱스는 2페이지, 보조 인덱스는 3페이지를 읽어 결과 
+
+<br>
+
+
+
+
+
+<br>
 > **확인문제: 다음 설명에서 빈칸에 공통으로 들어갈 용어를 쓰시오.**
 
 ```
@@ -223,16 +271,39 @@ CREATE TABLE table2 (
 ```
 
 ```
-여기에 답을 적어주세요!
+페이지분할
 ```
 
 
 ## 3. 인덱스의 실제 사용 
 
 <!-- 이번 챕터에서 제시된 실습을 흐름에 맞게 진행한 후, 실습 과정이 보일 수 있도록 인증 사진을 2장 이상 제출해 주세요. -->
+### 1. 기존 인덱스 확인 
+<img width="781" height="599" alt="image" src="https://github.com/user-attachments/assets/15974b26-361a-43f6-a7e0-4338f99dae65" />
 
-<!-- 이 부분을 지우고 인증사진을 제출해주세요.-->
+<br>
 
+### 2. 보조 인덱스
+<img width="787" height="582" alt="image" src="https://github.com/user-attachments/assets/dc16f418-bd01-4019-9e9a-704b3f84bd2d" />
+<br>
+
+### 3. 고유 보조 인덱스
+<img width="793" height="736" alt="image" src="https://github.com/user-attachments/assets/d5cfd9e7-8004-4f21-825d-233e877b39ed" />
+
+
+<br>
+
+### 4. 인덱스 활용
+
+<img width="784" height="624" alt="image" src="https://github.com/user-attachments/assets/44b6f984-3742-4930-920a-648f76084c2e" />
+
+<br>
+
+### 5. 인덱스 제거
+<img width="787" height="627" alt="image" src="https://github.com/user-attachments/assets/98a6c4bb-d20c-4453-907a-f3f6c3567f70" />
+
+<br>
+<br>
 
 ---
 
@@ -274,13 +345,30 @@ INSERT INTO employees VALUES
 1. department 컬럼에 보조 인덱스를 생성하시오.
     - 인덱스 생성 후, `SHOW INDEX FROM employees;` 실행 결과가 보이도록 캡처합니다.
     - (idx_department 인덱스가 존재하는지 확인되어야 합니다.)
+  
+<br>
+<img width="785" height="637" alt="image" src="https://github.com/user-attachments/assets/32e17aae-eff7-496a-a725-68dc1271b1fe" />
+
+<br>
+
 2. employees 테이블의 인덱스를 확인하시오.
+<br>
+<img width="782" height="562" alt="image" src="https://github.com/user-attachments/assets/43573b5b-9ed4-47b9-bcb0-332e312eebf8" />
+
+<br>
+
 3. department가 'Sales'인 직원을 조회하시오.
    - 'Sales' 조회 시, 반드시 `EXPLAIN`을 함께 실행한 화면을 캡처합니다.
    - (key 컬럼에 idx_department가 표시되어야 합니다.)
+  <br>
+<img width="768" height="500" alt="image" src="https://github.com/user-attachments/assets/24e2309c-ba7e-4e28-a24f-5540f953056c" />
+<br>
+
 4. 생성한 인덱스를 삭제하시오.
    - 인덱스 삭제 후, 다시 `SHOW INDEX FROM employees;`를 실행하여 idx_department가 사라진 것을 확인한 화면을 캡처합니다.
-
+<br>
+<img width="789" height="607" alt="image" src="https://github.com/user-attachments/assets/e124998b-3950-4f3a-879d-478081eb3b49" />
+<br>
 ## 3. 제출방법
 
 인덱스 생성 결과, EXPLAIN 실행 결과, 인덱스 삭제 결과가 모두 보이도록 캡처하여 제출하세요.
